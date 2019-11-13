@@ -40,7 +40,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
 
-## Inspiration
+## Motivation
 ** I got few negative grades at school because of this website, because I am too busy to do these tasks at home
 :]
 
