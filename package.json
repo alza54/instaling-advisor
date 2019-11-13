@@ -1,0 +1,35 @@
+{
+  "name": "instaling-solver",
+  "version": "1.0.0",
+  "description": "Minimalistic browser script for solving instaling.pl tasks, so it allows you to pass to the next class without absorbing your time at home",
+  "main": "src/index.ts",
+  "scripts": {
+    "build:dev": "webpack --config=webpack.dev.conf.js",
+    "build": "webpack --config=webpack.prod.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alza54/instaling-solver.git"
+  },
+  "keywords": [
+    "instaling",
+    "script",
+    "bot",
+    "solver"
+  ],
+  "author": "expl0it <expl0it@shellcode.team>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alza54/instaling-solver/issues"
+  },
+  "homepage": "https://instaling.pl/",
+  "devDependencies": {
+    "@types/node": "^12.12.7",
+    "css-loader": "^3.2.0",
+    "to-string-loader": "^1.1.5",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
