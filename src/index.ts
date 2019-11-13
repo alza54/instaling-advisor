@@ -58,8 +58,6 @@ class Solver {
           this.hookedFunctions.loadAudio(url);
         }
       }
-    } else {
-
     }
   }
 
