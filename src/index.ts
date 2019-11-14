@@ -1,5 +1,27 @@
 import Overlay from './Overlay';
 
+interface Task {
+  audio_file_name: string
+  has_audio: string
+  id: string
+  speech_part: string
+  translations: string
+  type: string
+  usage_example: string;
+  word: string;
+}
+
+interface NextTask extends Task {
+  audio_file_available: string;
+  audio_filename: string;
+  difficulty: string;
+  exp_easier_count: string;
+  global_id: string;
+  language_id: string;
+  maxWords: string;
+  meaning: null|string;
+}
+
 class Solver {
 
   private static readonly APP_PATH = '/ling2/html_app/app.php';
@@ -9,24 +31,20 @@ class Solver {
   protected readonly click = (selector: HTMLInputElement) => selector.click();
 
   protected selectors: { [key: string]: HTMLInputElement } = {
-    continueSessionButton: null,
-    audioElement: null
-  };
-
-  protected hookedFunctions: { [key: string]: Function } = {
-    loadAudio: null
+    startSessionPage: null,
+    startSessionButton: null,
+    continueSessionPage: null,
+    continueSessionButton: null
   };
 
   constructor () {
     Solver.checkPath();
+    Solver.enablePasting();
     try {
-      // @ts-ignore
-      $("#answer").off('paste');
       this.bindSelectors();
       this.ensureSelectorsExist();
-      this.initialiseHooks();
+      this.initialiseProxies();
       this.initialiseSession();
-      this.showAnswer(this.selectors.audioElement.src);
     } catch (e) {
       console.error(e);
       console.warn('Skrypt może być nieaktualny. Zgłoś problem na e-mail expl0it@shellcode.team lub w Github issue.');
@@ -35,8 +53,10 @@ class Solver {
   }
 
   private bindSelectors () {
+    this.selectors.startSessionPage = document.querySelector<HTMLInputElement>('#start_session_page');
+    this.selectors.startSessionButton = document.querySelector<HTMLInputElement>('#start_session_button');
+    this.selectors.continueSessionPage = document.querySelector<HTMLInputElement>('#continue_session_page');
     this.selectors.continueSessionButton = document.querySelector<HTMLInputElement>('#continue_session_button');
-    this.selectors.audioElement = document.querySelector<HTMLInputElement>('#jquery_audioPlayer audio');
   }
 
   private ensureSelectorsExist () {
@@ -47,28 +67,35 @@ class Solver {
     }
   }
 
-  private initialiseHooks ({ continueSessionButton } = this.selectors) {
-    if (continueSessionButton) {
-      this.hookedFunctions.loadAudio = (window as any).loadAudio;
-      (window as any).loadAudio = (url: string) => {
-        this.showAnswer(url);
-        if (url !== '/mp3/_empty.mp3') {
-          this.hookedFunctions.loadAudio('http://s3.shellcode.team/insta/jp.mp3'); // w końcu jp player
-        } else {
-          this.hookedFunctions.loadAudio(url);
+  private initialiseProxies () {
+    $(document).ajaxSuccess((_event, xhr, settings) => {
+      if (settings.url === '../server/actions/generate_next_word.php') {
+        let json = {} as NextTask;
+        try {
+          json = JSON.parse(xhr.responseText);
+        } catch {
+          throw `Nie można sparsować odpowiedzi serwera.`;
         }
+        json.word ? this.overlay.setAnswer(json.word, json.speech_part) : this.overlay.setAnswer('-', '-');
+        json.difficulty ? this.overlay.setInfo(json.difficulty, json.exp_easier_count) : this.overlay.setInfo('-', '-');
       }
+    });
+  }
+
+  private initialiseSession ({ startSessionPage, startSessionButton, continueSessionPage, continueSessionButton } = this.selectors) {
+    if (continueSessionPage.style.display !== 'none') {
+      this.click(continueSessionButton);
+    } else if (startSessionPage.style.display !== 'none') {
+      this.click(startSessionButton);
+    } else {
+      $('#learning_page').hide();
+      this.click(continueSessionButton);
+      this.click(startSessionButton);
     }
   }
 
-  private initialiseSession ({ continueSessionButton } = this.selectors) {
-    continueSessionButton && this.click(continueSessionButton);
-  }
-
-  private showAnswer (audioSource: string) {
-    const answer = audioSource.match(/^https:\/\/instaling\.pl\/?\/mp3\/[0-9]+\/(.+?)\.mp3$/)?.[1];
-    if (!answer) return;
-    this.overlay.setAnswer(answer);
+  public static enablePasting () {
+    $('#answer').off('paste');
   }
 
   public static checkPath () {

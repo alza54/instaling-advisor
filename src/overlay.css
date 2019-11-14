@@ -8,3 +8,14 @@
   font-weight: bold;
   border: 2px dashed rgba(0, 0, 0, .2);
 }
+
+#overlay-two {
+  position: fixed;
+  top: 4em;
+  right: 1em;
+  background: #51f;
+  padding: 6px;
+  color: #fff;
+  border: 2px dashed rgba(0, 0, 0, .2);
+  font-weight: bold;
+}
