@@ -1,6 +1,6 @@
 {
   "name": "instaling-solver",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Minimalistic browser script for solving instaling.pl tasks, so it allows you to pass to the next class without absorbing your time at home",
   "main": "src/index.ts",
   "scripts": {
