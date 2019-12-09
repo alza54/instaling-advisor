@@ -1,7 +1,7 @@
 {
-  "name": "instaling-solver",
+  "name": "instaling-advisor",
   "version": "1.1.0",
-  "description": "Minimalistic browser script for solving instaling.pl tasks, so it allows you to pass to the next class without absorbing your time at home",
+  "description": "Minimalistic browser script which helps you solving instaling.pl tasks, allowing you to pass to the next class without absorbing your time at home",
   "main": "src/index.ts",
   "scripts": {
     "build:dev": "webpack --config=webpack.dev.conf.js",
@@ -9,18 +9,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alza54/instaling-solver.git"
+    "url": "git+https://github.com/alza54/instaling-advisor.git"
   },
   "keywords": [
     "instaling",
     "script",
     "bot",
+    "advisor",
     "solver"
   ],
   "author": "expl0it <expl0it@shellcode.team>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/alza54/instaling-solver/issues"
+    "url": "https://github.com/alza54/instaling-advisor/issues"
   },
   "homepage": "https://instaling.pl/",
   "devDependencies": {
